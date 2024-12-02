@@ -1,10 +1,21 @@
+:root {
+    --primary-color: #ff6b6b;
+    --secondary-color: #4ecdc4;
+    --accent-color: #45b7d1;
+    --text-color: #333;
+    --background-color: #f5f5f5;
+    --card-background: rgba(255, 255, 255, 0.9);
+    --shadow: 0 5px 15px rgba(0,0,0,0.1);
+}
+
 body {
     margin: 0;
     padding: 0;
-    font-family: Arial, sans-serif;
-    background: linear-gradient(45deg, #ff6b6b, #4ecdc4, #45b7d1);
+    font-family: 'Segoe UI', Arial, sans-serif;
+    background: linear-gradient(45deg, var(--primary-color), var(--secondary-color), var(--accent-color));
     background-size: 400% 400%;
     animation: gradientBG 15s ease infinite;
+    min-height: 100vh;
 }
 
 @keyframes gradientBG {
@@ -20,50 +31,57 @@ body {
 }
 
 .container {
-    max-width: 800px;
-    margin: 50px auto;
+    max-width: 1400px;
+    margin: 20px auto;
     padding: 20px;
-    background: rgba(255, 255, 255, 0.9);
+    display: grid;
+    grid-template-columns: 350px 1fr;
+    grid-template-rows: auto 1fr;
+    gap: 20px;
+    height: calc(100vh - 40px);
+}
+
+.title-section {
+    grid-column: 1 / -1;
+    text-align: center;
+    background: var(--card-background);
     border-radius: 20px;
-    box-shadow: 0 0 20px rgba(0,0,0,0.2);
-    backdrop-filter: blur(5px);
+    padding: 20px;
+    box-shadow: var(--shadow);
 }
 
 .title {
-    color: #ff4757;
-    text-align: center;
     font-size: 2.5em;
+    color: var(--primary-color);
     text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
     animation: rainbow 5s linear infinite;
+    margin: 0;
+}
+
+.left-section {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    max-height: calc(100vh - 140px);
+    overflow-y: auto;
+}
+
+.chat-section {
+    display: flex;
+    flex-direction: column;
 }
 
 .card {
-    background: rgba(255, 255, 255, 0.8);
-    border-radius: 15px;
+    background: var(--card-background);
+    border-radius: 20px;
     padding: 20px;
-    margin: 20px 0;
-    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    box-shadow: var(--shadow);
+    backdrop-filter: blur(5px);
     transition: transform 0.3s ease;
 }
 
 .card:hover {
     transform: translateY(-5px);
-}
-
-h2 {
-    color: #2ed573;
-    margin-bottom: 15px;
-    font-size: 1.5em;
-}
-
-.reason {
-    padding: 10px;
-    margin: 10px 0;
-    background: linear-gradient(45deg, #ff6b6b, #4ecdc4);
-    -webkit-background-clip: text;
-    background-clip: text;
-    color: transparent;
-    font-size: 1.2em;
 }
 
 .funny-list {
@@ -117,17 +135,128 @@ h2 {
     100% { color: #ff4757; }
 }
 
-@media (max-width: 600px) {
+@media (max-width: 1200px) {
     .container {
-        margin: 20px;
+        grid-template-columns: 300px 1fr;
     }
-    
+}
+
+@media (max-width: 900px) {
+    .container {
+        grid-template-columns: 1fr;
+        grid-template-rows: auto auto 1fr;
+        height: auto;
+        margin: 10px;
+        padding: 10px;
+        gap: 10px;
+    }
+
+    .title-section {
+        padding: 10px;
+    }
+
     .title {
-        font-size: 2em;
+        font-size: 1.8em;
     }
-    
+
+    .left-section {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 10px;
+        max-height: none;
+        overflow-y: visible;
+    }
+
+    .card {
+        padding: 15px;
+        margin: 0;
+    }
+
+    .chat-section {
+        height: 70vh;
+    }
+
+    .chat-card {
+        height: 100%;
+    }
+
+    .chat-messages {
+        height: calc(100% - 100px);
+    }
+
+    .chat-input-container {
+        position: sticky;
+        bottom: 0;
+        background: var(--card-background);
+        padding: 10px;
+        border-radius: 10px;
+    }
+
+    #chat-input {
+        padding: 8px;
+        font-size: 16px;
+    }
+
+    .chat-btn {
+        padding: 8px 15px;
+        font-size: 14px;
+    }
+
     .emoji {
         font-size: 1.5em;
+    }
+
+    .funny-list li {
+        padding: 8px;
+        margin: 3px 0;
+    }
+
+    .joke-btn {
+        width: 100%;
+        padding: 8px 15px;
+    }
+}
+
+@media (max-width: 480px) {
+    .container {
+        margin: 5px;
+        padding: 5px;
+    }
+
+    .left-section {
+        grid-template-columns: 1fr;
+    }
+
+    .title {
+        font-size: 1.5em;
+    }
+
+    .message {
+        max-width: 85%;
+        font-size: 14px;
+    }
+
+    .card h2 {
+        font-size: 1.2em;
+    }
+
+    .emoji-container {
+        padding: 10px;
+    }
+}
+
+@media (hover: none) {
+    .card:hover {
+        transform: none;
+    }
+
+    .chat-btn:active,
+    .joke-btn:active {
+        transform: scale(0.95);
+    }
+
+    .funny-list li:active {
+        background: rgba(78, 205, 196, 0.2);
     }
 }
 
@@ -160,9 +289,10 @@ h2 {
 }
 
 .chat-card {
-    min-height: 400px;
+    flex: 1;
     display: flex;
     flex-direction: column;
+    min-height: 0;
 }
 
 .chat-container {
@@ -170,66 +300,21 @@ h2 {
     display: flex;
     flex-direction: column;
     gap: 10px;
+    min-height: 0;
 }
 
 .chat-messages {
-    height: 300px;
-    overflow-y: auto;
-    padding: 10px;
+    flex: 1;
+    padding: 15px;
     background: rgba(255, 255, 255, 0.5);
-    border-radius: 10px;
+    border-radius: 15px;
+    overflow-y: auto;
     display: flex;
     flex-direction: column;
     gap: 10px;
+    min-height: 0;
 }
 
-.message {
-    padding: 10px;
-    border-radius: 15px;
-    max-width: 80%;
-    word-wrap: break-word;
-}
-
-.user-message {
-    background: #4ecdc4;
-    color: white;
-    align-self: flex-end;
-}
-
-.bot-message {
-    background: #ff6b6b;
-    color: white;
-    align-self: flex-start;
-}
-
-.chat-input-container {
-    display: flex;
-    gap: 10px;
-}
-
-#chat-input {
-    flex: 1;
-    padding: 10px;
-    border: none;
-    border-radius: 5px;
-    background: rgba(255, 255, 255, 0.8);
-    font-size: 1em;
-}
-
-.chat-btn {
-    background: linear-gradient(45deg, #ff6b6b, #4ecdc4);
-    border: none;
-    padding: 10px 20px;
-    color: white;
-    border-radius: 5px;
-    cursor: pointer;
-    transition: transform 0.3s ease;
-}
-
-.chat-btn:hover {
-    transform: scale(1.05);
-    box-shadow: 0 5px 15px rgba(0,0,0,0.2);
-}
 .message {
     max-width: 80%;
     padding: 10px 15px;
