@@ -2,55 +2,6 @@ body {
     margin: 0;
     padding: 0;
     font-family: Arial, sans-serif;
-    background-color: #f0f0f0;
-}
-
-.container {
-    max-width: 800px;
-    margin: 50px auto;
-    padding: 20px;
-    background-color: white;
-    border-radius: 10px;
-    box-shadow: 0 0 10px rgba(0,0,0,0.1);
-}
-
-.title {
-    color: #333;
-    text-align: center;
-    font-size: 2.5em;
-    animation: bounce 1s infinite;
-}
-
-.content {
-    padding: 20px;
-    line-height: 1.6;
-    font-size: 1.2em;
-}
-
-p {
-    margin-bottom: 15px;
-}
-
-.content p {
-    transition: transform 0.3s;
-}
-
-.content p:hover {
-    transform: scale(1.05);
-}
-
-@keyframes bounce {
-    0%, 100% {
-        transform: translateY(0);
-    }
-    50% {
-        transform: translateY(-10px);
-    }
-} 
-body {
-    margin: 0;
-    padding: 0;
-    font-family: Arial, sans-serif;
     background: linear-gradient(45deg, #ff6b6b, #4ecdc4, #45b7d1);
     background-size: 400% 400%;
     animation: gradientBG 15s ease infinite;
@@ -86,6 +37,77 @@ body {
     animation: rainbow 5s linear infinite;
 }
 
+.card {
+    background: rgba(255, 255, 255, 0.8);
+    border-radius: 15px;
+    padding: 20px;
+    margin: 20px 0;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    transition: transform 0.3s ease;
+}
+
+.card:hover {
+    transform: translateY(-5px);
+}
+
+h2 {
+    color: #2ed573;
+    margin-bottom: 15px;
+    font-size: 1.5em;
+}
+
+.reason {
+    padding: 10px;
+    margin: 10px 0;
+    background: linear-gradient(45deg, #ff6b6b, #4ecdc4);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    font-size: 1.2em;
+}
+
+.funny-list {
+    list-style: none;
+    padding: 0;
+}
+
+.funny-list li {
+    padding: 10px;
+    margin: 5px 0;
+    border-left: 4px solid #4ecdc4;
+    background: rgba(78, 205, 196, 0.1);
+    transition: all 0.3s ease;
+}
+
+.funny-list li:hover {
+    border-left-width: 8px;
+    padding-left: 15px;
+    background: rgba(78, 205, 196, 0.2);
+}
+
+.emoji-container {
+    display: flex;
+    justify-content: space-around;
+    padding: 20px;
+}
+
+.emoji {
+    font-size: 2em;
+    cursor: pointer;
+    transition: transform 0.3s ease;
+    display: inline-block;
+}
+
+.emoji:hover {
+    transform: scale(1.5) rotate(15deg);
+    animation: shake 0.5s ease infinite;
+}
+
+@keyframes shake {
+    0%, 100% { transform: rotate(-15deg); }
+    50% { transform: rotate(15deg); }
+}
+
 @keyframes rainbow {
     0% { color: #ff4757; }
     25% { color: #2ed573; }
@@ -94,35 +116,16 @@ body {
     100% { color: #ff4757; }
 }
 
-.content {
-    padding: 20px;
-    line-height: 1.6;
-    font-size: 1.2em;
-}
-
-.content p {
-    background: linear-gradient(45deg, #ff6b6b, #4ecdc4);
-    -webkit-background-clip: text;
-    background-clip: text;
-    color: transparent;
-    transition: transform 0.3s, text-shadow 0.3s;
-    padding: 10px;
-    border-radius: 10px;
-}
-
-.content p:hover {
-    transform: scale(1.05);
-    text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
-    background: linear-gradient(45deg, #4ecdc4, #ff6b6b);
-    -webkit-background-clip: text;
-    background-clip: text;
-}
-
-@keyframes bounce {
-    0%, 100% {
-        transform: translateY(0);
+@media (max-width: 600px) {
+    .container {
+        margin: 20px;
     }
-    50% {
-        transform: translateY(-10px);
+    
+    .title {
+        font-size: 2em;
     }
-} 
+    
+    .emoji {
+        font-size: 1.5em;
+    }
+}
