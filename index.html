@@ -11,8 +11,13 @@ layout: default
 </head>
 <body>
     <div class="container">
-        <h1 class="title" id="mainTitle">SB GG莲</h1>
-        <div class="content">
+        <!-- 标题区域 -->
+        <div class="title-section">
+            <h1 class="title">笨笨 GG莲</h1>
+        </div>
+
+        <!-- 左侧功能区 -->
+        <div class="left-section">
             <div class="card">
                 <h2>为什么说GG莲很搞笑？</h2>
                 <p class="reason" onclick="changeColor(this)">因为他总是做一些很奇怪的事情 😂</p>
@@ -45,7 +50,10 @@ layout: default
                 <button class="joke-btn" onclick="generateJoke()">生成笑话</button>
                 <p id="jokeText" class="joke-text"></p>
             </div>
+        </div>
 
+        <!-- 右侧聊天区 -->
+        <div class="chat-section">
             <div class="card chat-card">
                 <h2>和GG莲聊天</h2>
                 <div class="chat-container">
@@ -171,20 +179,56 @@ layout: default
 
         function generateResponse(userMessage) {
             // 预设的回复模板
-            const responses = [
-                "哈哈哈，你说得对！😆",
-                "啊？我刚才在发呆，没听清...😅",
-                "这个嘛...让我想想...🤔",
-                "我觉得可以去吃火锅！🍲",
-                "你说什么都对！我先去睡觉了...😴",
-                "这个问题太难了，我要去问问我的猫咪...🐱",
-                "我刚才在想一个特别好笑的事情...😂",
-                "要不我们去跳舞吧！💃",
-                "这个问题嘛...（开始傻笑）😝"
-            ];
+            const responses = {
+                // 普通回复
+                default: [
+                    "哈哈哈，你说得对！😆",
+                    "啊？我刚才在发呆，没听清...😅",
+                    "这个嘛...让我想想...🤔",
+                    "我觉得可以去吃火锅！🍲",
+                    "你说什么都对！我先去睡觉了...😴",
+                    "这个问题太难了，我要去问问我的猫咪...🐱",
+                    "我刚才在想一个特别好笑的事情...😂",
+                    "要不我们去跳舞吧！💃",
+                    "这个问题嘛...（开始傻笑）😝"
+                ],
+                // 问候回复
+                greetings: [
+                    "你好呀！今天也是开心的一天！😊",
+                    "哈喽哈喽，我刚刚在数云朵呢！☁️",
+                    "嗨！我正在想一个特别好笑的事情！😆",
+                    "来啦来啦！我刚才在追蝴蝶！🦋"
+                ],
+                // 情绪回复
+                emotions: [
+                    "开心的时候要说出来哦！😊",
+                    "不开心吗？我给你讲个笑话吧！😄",
+                    "我们一起开心一下吧！💃",
+                    "让我们一起笑一笑！😆"
+                ],
+                // 疑问回复
+                questions: [
+                    "这个问题太难了，让我想想...（开始数星星）✨",
+                    "啊？什么什么？我刚才在发呆！😅",
+                    "这个嘛...（陷入沉思）🤔",
+                    "让我问问我的小鸟朋友！🐦"
+                ]
+            };
 
             // 显示加载状态
             addMessage('bot', "思考中...🤔");
+            
+            // 根据用户输入选择回复类型
+            let responsePool = responses.default;
+            const message = userMessage.toLowerCase();
+            
+            if (message.includes('你好') || message.includes('嗨') || message.includes('哈喽')) {
+                responsePool = responses.greetings;
+            } else if (message.includes('开心') || message.includes('难过') || message.includes('伤心')) {
+                responsePool = responses.emotions;
+            } else if (message.includes('吗') || message.includes('?') || message.includes('？')) {
+                responsePool = responses.questions;
+            }
             
             // 延迟回复，模拟思考时间
             setTimeout(() => {
@@ -193,9 +237,26 @@ layout: default
                 messages.removeChild(messages.lastChild);
                 
                 // 随机选择一个回复
-                const response = responses[Math.floor(Math.random() * responses.length)];
-                addMessage('bot', response);
-            }, 300);
+                const response = responsePool[Math.floor(Math.random() * responsePool.length)];
+                
+                // 添加打字效果
+                let i = 0;
+                const typingSpeed = 50; // 打字速度（毫秒）
+                const messageDiv = document.createElement('div');
+                messageDiv.className = 'message bot-message';
+                messages.appendChild(messageDiv);
+                
+                function typeWriter() {
+                    if (i < response.length) {
+                        messageDiv.textContent += response.charAt(i);
+                        i++;
+                        messages.scrollTop = messages.scrollHeight;
+                        setTimeout(typeWriter, typingSpeed);
+                    }
+                }
+                
+                typeWriter();
+            }, 500);
         }
     </script>
 </body>
