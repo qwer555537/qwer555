@@ -215,48 +215,62 @@ layout: default
                 ]
             };
 
-            // 显示加载状态
-            addMessage('bot', "思考中...🤔");
-            
-            // 根据用户输入选择回复类型
-            let responsePool = responses.default;
-            const message = userMessage.toLowerCase();
-            
-            if (message.includes('你好') || message.includes('嗨') || message.includes('哈喽')) {
-                responsePool = responses.greetings;
-            } else if (message.includes('开心') || message.includes('难过') || message.includes('伤心')) {
-                responsePool = responses.emotions;
-            } else if (message.includes('吗') || message.includes('?') || message.includes('？')) {
-                responsePool = responses.questions;
-            }
-            
-            // 延迟回复，模拟思考时间
-            setTimeout(() => {
-                // 移除加载消息
-                const messages = document.getElementById('chat-messages');
-                messages.removeChild(messages.lastChild);
+            try {
+                // 显示加载状态
+                addMessage('bot', "思考中...🤔");
                 
-                // 随机选择一个回复
-                const response = responsePool[Math.floor(Math.random() * responsePool.length)];
+                // 根据用户输入选择回复类型
+                let responsePool = responses.default;
+                const message = userMessage.toLowerCase();
                 
-                // 添加打字效果
-                let i = 0;
-                const typingSpeed = 50; // 打字速度（毫秒）
-                const messageDiv = document.createElement('div');
-                messageDiv.className = 'message bot-message';
-                messages.appendChild(messageDiv);
-                
-                function typeWriter() {
-                    if (i < response.length) {
-                        messageDiv.textContent += response.charAt(i);
-                        i++;
-                        messages.scrollTop = messages.scrollHeight;
-                        setTimeout(typeWriter, typingSpeed);
-                    }
+                // 智能匹配回复类型
+                if (message.match(/你好|嗨|哈喽|早上好|晚上好|下午好/)) {
+                    responsePool = responses.greetings;
+                } else if (message.match(/开心|难过|伤心|快乐|不开心|生气/)) {
+                    responsePool = responses.emotions;
+                } else if (message.match(/[吗？\?]$/)) {
+                    responsePool = responses.questions;
                 }
                 
-                typeWriter();
-            }, 500);
+                // 延迟回复，模拟思考时间
+                setTimeout(() => {
+                    try {
+                        // 移除加载消息
+                        const messages = document.getElementById('chat-messages');
+                        if (messages && messages.lastChild) {
+                            messages.removeChild(messages.lastChild);
+                        }
+                        
+                        // 随机选择一个回复
+                        const response = responsePool[Math.floor(Math.random() * responsePool.length)];
+                        
+                        // 添加打字效果
+                        let i = 0;
+                        const typingSpeed = 50; // 打字速度（毫秒）
+                        const messageDiv = document.createElement('div');
+                        messageDiv.className = 'message bot-message';
+                        messages.appendChild(messageDiv);
+                        
+                        function typeWriter() {
+                            if (i < response.length) {
+                                messageDiv.textContent += response.charAt(i);
+                                i++;
+                                messages.scrollTop = messages.scrollHeight;
+                                setTimeout(typeWriter, typingSpeed);
+                            }
+                        }
+                        
+                        typeWriter();
+                    } catch (error) {
+                        console.error('Error in response generation:', error);
+                        addMessage('bot', '啊哦，我好像有点迷糊了...😅');
+                    }
+                }, 500);
+                
+            } catch (error) {
+                console.error('Error in generateResponse:', error);
+                addMessage('bot', '我突然有点晕晕的...要不我们休息一下？😅');
+            }
         }
     </script>
 </body>
