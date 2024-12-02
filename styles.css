@@ -383,3 +383,126 @@ body {
     background: var(--secondary-color);
     border-radius: 4px;
 }
+/* 手机端适配 */
+@media (max-width: 900px) {
+    body {
+        background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+    }
+
+    .container {
+        margin: 0;
+        padding: 10px;
+        gap: 10px;
+        height: 100vh;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .title-section {
+        padding: 15px 10px;
+        margin: 0;
+        border-radius: 0;
+    }
+
+    .title {
+        font-size: 1.8em;
+        margin: 0;
+    }
+
+    .left-section {
+        flex: none;
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        overflow-x: auto;
+        padding: 5px;
+        margin: 0;
+    }
+
+    .card {
+        padding: 15px;
+        margin: 0;
+        border-radius: 15px;
+        min-width: 280px;
+    }
+
+    .chat-section {
+        flex: 1;
+        margin: 0;
+    }
+
+    .chat-card {
+        margin: 0;
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .chat-messages {
+        flex: 1;
+        padding: 10px;
+    }
+
+    .chat-input-container {
+        padding: 10px;
+        background: var(--card-background);
+        border-radius: 15px;
+        margin-top: 10px;
+        position: sticky;
+        bottom: 0;
+    }
+
+    #chat-input {
+        height: 40px;
+        font-size: 16px;
+    }
+
+    .chat-btn {
+        padding: 0 20px;
+        height: 40px;
+    }
+
+    .message {
+        max-width: 85%;
+        padding: 10px 15px;
+        margin: 5px 0;
+    }
+
+    .emoji-container {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 10px;
+    }
+
+    .emoji {
+        font-size: 2em;
+        text-align: center;
+    }
+}
+
+/* iPhone 14 Pro Max 特定优化 */
+@media only screen 
+    and (device-width: 430px) 
+    and (device-height: 932px) 
+    and (-webkit-device-pixel-ratio: 3) {
+    
+    .container {
+        padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);
+    }
+
+    .chat-input-container {
+        padding-bottom: calc(10px + env(safe-area-inset-bottom));
+    }
+
+    .title {
+        font-size: 1.6em;
+    }
+
+    .card h2 {
+        font-size: 1.3em;
+    }
+
+    .message {
+        font-size: 16px;
+    }
+}
