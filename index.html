@@ -45,6 +45,17 @@ layout: default
                 <button class="joke-btn" onclick="generateJoke()">生成笑话</button>
                 <p id="jokeText" class="joke-text"></p>
             </div>
+
+            <div class="card chat-card">
+                <h2>和GG莲聊天</h2>
+                <div class="chat-container">
+                    <div id="chat-messages" class="chat-messages"></div>
+                    <div class="chat-input-container">
+                        <input type="text" id="chat-input" placeholder="说点什么..." onkeypress="handleKeyPress(event)">
+                        <button onclick="sendMessage()" class="chat-btn">发送</button>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 
@@ -73,10 +84,34 @@ layout: default
 
         // 放大表情
         function bigEmoji(element) {
-            element.style.transform = 'scale(2)';
+            // 添加动画类
+            element.style.animation = 'popAndSpin 0.8s ease';
+            
+            // 动画结束后移除动画
             setTimeout(() => {
-                element.style.transform = 'scale(1)';
-            }, 500);
+                element.style.animation = '';
+            }, 800);
+            
+            // 播放随机音效（可选）
+            const sounds = ['啪', '噗', '咔', '哇'];
+            const randomSound = sounds[Math.floor(Math.random() * sounds.length)];
+            
+            // 创建一个临时文本显示音效
+            const soundText = document.createElement('span');
+            soundText.textContent = randomSound;
+            soundText.style.position = 'absolute';
+            soundText.style.color = getRandomColor();
+            soundText.style.fontSize = '24px';
+            soundText.style.pointerEvents = 'none';
+            soundText.style.animation = 'fadeOutUp 1s forwards';
+            
+            // 将音效文本添加到表情旁边
+            element.parentNode.appendChild(soundText);
+            
+            // 1秒后移除音效文本
+            setTimeout(() => {
+                soundText.remove();
+            }, 1000);
         }
 
         // 生成随机笑话
@@ -85,11 +120,82 @@ layout: default
                 "GG莲今天又在发呆，看见蚂蚁搬家都能笑半天",
                 "GG莲说他梦见自己变成了一只鸡，醒来还在打鸣",
                 "GG莲走路的时候突然开始跳舞，把路人都逗笑了",
-                "GG莲吃饭时把筷子插鼻子里，说这样可以闻到饭香"
+                "GG莲饭时把筷子插鼻子里，说这样可以闻到饭香"
             ];
             const jokeText = document.getElementById('jokeText');
             jokeText.textContent = jokes[Math.floor(Math.random() * jokes.length)];
             jokeText.style.animation = 'fadeIn 0.5s';
+        }
+
+        // 添加新的动画关键帧
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes fadeOutUp {
+                0% {
+                    opacity: 1;
+                    transform: translateY(0);
+                }
+                100% {
+                    opacity: 0;
+                    transform: translateY(-20px);
+                }
+            }
+        `;
+        document.head.appendChild(style);
+
+        // 添加到现有的 script 中
+        function handleKeyPress(event) {
+            if (event.key === 'Enter') {
+                sendMessage();
+            }
+        }
+
+        function sendMessage() {
+            const input = document.getElementById('chat-input');
+            const message = input.value.trim();
+            if (message) {
+                addMessage('user', message);
+                generateResponse(message);
+                input.value = '';
+            }
+        }
+
+        function addMessage(sender, text) {
+            const messages = document.getElementById('chat-messages');
+            const messageDiv = document.createElement('div');
+            messageDiv.className = `message ${sender}-message`;
+            messageDiv.textContent = text;
+            messages.appendChild(messageDiv);
+            messages.scrollTop = messages.scrollHeight;
+        }
+
+        function generateResponse(userMessage) {
+            // 预设的回复模板
+            const responses = [
+                "哈哈哈，你说得对！😆",
+                "啊？我刚才在发呆，没听清...😅",
+                "这个嘛...让我想想...🤔",
+                "我觉得可以去吃火锅！🍲",
+                "你说什么都对！我先去睡觉了...😴",
+                "这个问题太难了，我要去问问我的猫咪...🐱",
+                "我刚才在想一个特别好笑的事情...😂",
+                "要不我们去跳舞吧！💃",
+                "这个问题嘛...（开始傻笑）😝"
+            ];
+
+            // 显示加载状态
+            addMessage('bot', "思考中...🤔");
+            
+            // 延迟回复，模拟思考时间
+            setTimeout(() => {
+                // 移除加载消息
+                const messages = document.getElementById('chat-messages');
+                messages.removeChild(messages.lastChild);
+                
+                // 随机选择一个回复
+                const response = responses[Math.floor(Math.random() * responses.length)];
+                addMessage('bot', response);
+            }, 300);
         }
     </script>
 </body>
